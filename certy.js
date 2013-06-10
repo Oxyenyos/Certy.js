@@ -7,7 +7,7 @@
    $('#downloadButton').click(function() { 
     $.ajax({
         type: "GET",
-        url: "CTCMarathon2012.csv",
+        url: "Sample.csv",
         dataType: "text",
         success: function(data){
             data = processData(data);
