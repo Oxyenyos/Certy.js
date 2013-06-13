@@ -1,10 +1,12 @@
-  var data = []; 
-
-     var output=new String("string");
+   var data = []; 
+   var output=new String("string");
    var bib;	
-	var pos ;
+   var pos ;
+   
  $(document).ready(function () {
    $('#downloadButton').click(function() { 
+   	
+    // Read CSV file for input
     $.ajax({
         type: "GET",
         url: "Sample.csv",
@@ -12,7 +14,9 @@
         success: function(data){
             data = processData(data);
         }
-    });
+    }); // end of ajax
+    
+    //Dialog box
      $( "#dialog" ).dialog({
             modal: true,
             buttons: {
@@ -20,13 +24,15 @@
                     $( this ).dialog( "close" );
                 }
             }
-        });
+     });
 	
-   });
+   });//end of click
  });
+ 
+ 
 function processData(allText) {
     var allTextLines = allText.split(/\r\n|\n/);
-	var lines = []; 
+    var lines = []; 
 
     var headers = allTextLines[0].split(',');
     for (var i=1; i<allTextLines.length; i++) {
@@ -42,7 +48,7 @@ function processData(allText) {
 
 	   bib = document.getElementById('bib').value;
 	   searchData(lines, bib);
-}
+} // end of processData
 
 function searchData(data, search){
     var tempArray = [];
