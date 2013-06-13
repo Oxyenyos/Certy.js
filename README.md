@@ -1,8 +1,6 @@
 Certy.js
 ========
 
-HTML5 Canvas based eCertificate creation tool
+Certy.js is a simple HTML5 Canvas based Javascript framework for eCertificate creation.
 
-Usigng certy.js you can create electronic certificates.
 
-Certy.js use HTML5 Canvas tag to imposrt a image, write text content to it and convert it to image files for download
