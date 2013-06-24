@@ -1,8 +1,8 @@
   var data = []; 
 
   var output=new String("string");
-	var bib;	
-	var pos ;
+  var bib;	
+  var pos ;
 
 
  $(document).ready(function () {
@@ -10,7 +10,7 @@
     //Read CSV file
         $.ajax({
             type: "GET",
-            url: "ParticipantList.csv",
+            url: "aerolist.csv",
             dataType: "text",
             success: function(data){
                 data = processData(data);
@@ -23,7 +23,7 @@
 //parse through each line in CSV for searching 
 function processData(allText) {
   var allTextLines = allText.split(/\r\n|\n/);
-	var lines = []; 
+  var lines = []; 
   var headers = allTextLines[0].split(',');
 
   for (var i=1; i<allTextLines.length; i++) {
@@ -52,7 +52,7 @@ function searchData(data, search){
     }
 	
   var c = document.getElementById('canvas');
-	var context = c.getContext('2d');
+  var context = c.getContext('2d');
   var backgroundImage = new Image();
 
   backgroundImage.onload = function() {
@@ -60,7 +60,7 @@ function searchData(data, search){
           DrawText();
   };
   
-  backgroundImage.src = "CertificateTemplate.png";
+  backgroundImage.src = "CCC4Certificate.png";
 
   function DrawScreen() {
     context.drawImage(backgroundImage, 0, 0);
@@ -76,7 +76,7 @@ function searchData(data, search){
 	  context.fillText(Time, 930, 670);
   }
 	  
-	var FinalCanvas = document.getElementById('canvas');
+  var FinalCanvas = document.getElementById('canvas');
   var data = FinalCanvas.toDataURL("image/png");
   document.getElementById('canvas').style.display="block";
 }
