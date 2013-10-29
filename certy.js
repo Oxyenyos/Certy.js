@@ -1,82 +1,92 @@
-  var data = []; 
+  $(document).ready(function () {
+    $.ajax({
+        type: "GET",
+        url: "10kms.csv",
+        dataType: "text",
+        success: function(data){
+            data = processData(data);
+        }     
+       });
 
-  var output=new String("string");
-  var bib;	
-  var pos ;
+   });
 
+ var data = []; 
+ var lines = [];
+ var tempArray = [];
+ var output;
+ var searchValue; 
 
- $(document).ready(function () {
-   $('#downloadButton').click(function() { 
-    //Read CSV file
-        $.ajax({
-            type: "GET",
-            url: "aerolist.csv",
-            dataType: "text",
-            success: function(data){
-                data = processData(data);
-            }
-        }); //end of ajax call
-	  });//end of button click
- });// end of document.ready
-
-
-//parse through each line in CSV for searching 
 function processData(allText) {
-  var allTextLines = allText.split(/\r\n|\n/);
-  var lines = []; 
-  var headers = allTextLines[0].split(',');
-
-  for (var i=1; i<allTextLines.length; i++) {
-    var data = allTextLines[i].split(',');
-      if (data.length == headers.length) {
-        var tarr = [];
-          for (var j=0; j<headers.length; j++) {
-            tarr.push(data[j]);
-          }
-          lines.push(tarr);
-      }//end of IF
-  } //end of for
-
-	bib = document.getElementById('bib').value;
-	searchData(lines, bib);
-}//end of process data
-
-
-function searchData(data, search){
-  var tempArray = [];
-  for(i=0; i<data.length; i++){
-    pos = $.inArray(search, data[i]);
-        if(pos !== -1){
-            tempArray.push(data[i]);
+    var allTextLines = allText.split(/\r\n|\n/);
+    var headers = allTextLines[0].split(',');
+    for (var i=1; i<allTextLines.length; i++) {
+        var data = allTextLines[i].split(',');
+        if (data.length == headers.length) {
+            var tarr = [];
+            for (var j=0; j<headers.length; j++) {
+                tarr.push(data[j]);
+            }
+            lines.push(tarr);
         }
-    }
-	
-  var c = document.getElementById('canvas');
-  var context = c.getContext('2d');
-  var backgroundImage = new Image();
+    } 
+}
 
-  backgroundImage.onload = function() {
-          DrawScreen();
-          DrawText();
-  };
-  
-  backgroundImage.src = "CCC4Certificate.png";
 
-  function DrawScreen() {
-    context.drawImage(backgroundImage, 0, 0);
-  }
 
-	function DrawText() {
-    context.fillStyle = "Black";
-    context.font = 'italic 65px Calibri';
-    context.textBaseline = 'top';
-	  var Name = tempArray[0][0];
-	  var Time =  tempArray[0][2];
-    context.fillText(Name, 600, 520);
-	  context.fillText(Time, 930, 670);
-  }
-	  
-  var FinalCanvas = document.getElementById('canvas');
-  var data = FinalCanvas.toDataURL("image/png");
-  document.getElementById('canvas').style.display="block";
+function formSubmit() {
+
+         var value = document.getElementById('bib').value;
+         value = value.toUpperCase();
+         searchData(lines, value);
+          function searchData(data, search) { 
+              for(i=0; i<600; i++) {
+                  var pos = $.inArray(search, data[i]);
+                  if(pos !== -1) { tempArray.push(data[i]); }
+              }
+              return tempArray[0][0];
+             
+          }  
+
+    	 var c = document.getElementById('canvas');
+    	  var context = c.getContext('2d');
+        var backgroundImage = new Image();
+
+        backgroundImage.onload = function() {
+            DrawScreen();
+            DrawText();
+        };
+
+        backgroundImage.src = "10kms.png";
+
+        function DrawScreen() {
+           context.drawImage(backgroundImage, 0, 0);
+        }
+        
+        function DrawText() {
+           context.fillStyle = "black";
+           context.font = "28px sans-serif";
+           context.textBaseline = 'top';
+           var name = tempArray[0][0].toLowerCase();
+           name = name.capitalize();
+           context.fillText(name+"   "+tempArray[0][3]+" Hours", 40, 210);
+        }
+  	  
+        var canvasTag = document.getElementById("canvas");
+        var data = canvas.toDataURL("image/png");
+        canvasTag.innerHTML = data;
+        canvasTag.style.display="block";
+
+        String.prototype.capitalize = function() {
+          return this.charAt(0).toUpperCase() + this.slice(1);
+        }
+
+	document.getElementById('download').addEventListener('click', function() {
+	    downloadCanvas(this, 'canvas', 'ChennaiTrailMarathon'+tempArray[0][0]+'.png');
+	}, false);
+
+	function downloadCanvas(link, canvasId, filename) {
+	    link.href = document.getElementById(canvasId).toDataURL();
+	    link.download = filename;
+	}
+
 }
